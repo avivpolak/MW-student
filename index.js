@@ -5,6 +5,8 @@ const jsonParser = bodyParser.json();
 const app = express();
 require("dotenv").config();
 const userRouter = require("./routers/user");
+const studentRouter = require("./routers/student");
+
 const { morganBodyLogger } = require("./morgan");
 const errorHandlingMiddleware = require("./middlewares/errorHandlingMiddleware");
 const unknownEndpoint = require("./middlewares/unknownEndpoint");
@@ -29,6 +31,7 @@ app.get("/", (req, res) => {
     res.send("working");
 });
 app.use("/user", jsonParser, userRouter);
+app.use("/student", jsonParser, studentRouter);
 
 // unknownEndpoint handling middleware
 app.use(unknownEndpoint);
