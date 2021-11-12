@@ -52,13 +52,28 @@ exports.searchByOne = async (req, res, next) => {
     const key = Object.entries(req.query)[0][0];
     const value = Object.entries(req.query)[0][1];
     const query = { key: value };
+    //update
+    //console.log(await Student.find({}));
+    // await Student.updateMany({ name: "Yahalom" }, { $push: { courses: "javascript" } });
+    // await Student.updateMany({ name: "Koren" }, { $set: { birth: new Date("1988-03-19") } });
+    // await Student.find({ name: /o/i });
+
+    //await Student.updateMany({ name: "Koren" }, { $set: { surName: "blabla" } });
+
+    //console.log(await Student.find({ $or: [{ surName: /y/i }, { surName: /h/i }] }));
+    console.log(await Student.find({}));
+
+    await Student.deleteOne({ birth: new Date("1988-03-19") });
+
+    console.log(await Student.find({}));
 
     if (key === "courses") {
       studentList = await Student.find({ courses: value });
     } else {
       studentList = await Student.find(query);
     }
-    if (studentList.length === 0) next(new Error("No student found in db for this name"));
+
+    if (studentList.length === 0) next(new Error("No student found in db for this category"));
     res.status(200).json(studentList);
   } catch (error) {
     next(error);
@@ -80,19 +95,3 @@ exports.getStudentsLearnCourse = async (req, res, next) => {
     next(error);
   }
 };
-// async function getStudentsLearn(course) {
-//     const result = await Student.find({});
-//     console.log(result);
-// }
-// async function getStudentsLearnGender(course, gender) {
-//     const result = Student.find({});
-//     console.log(result);
-// }
-// async function getAllStudentsBirthAfter(date) {
-//     const result = await Student.find({});
-//     console.log(result);
-// }
-// async function getAllStudentsPhonesStartsWith(str) {
-//     const result = await Student.find({});
-//     console.log(result);
-// }
