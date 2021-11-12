@@ -48,19 +48,18 @@ exports.listAllStudentsByName = async (req, res, next) => {
 exports.searchByOne = async (req, res, next) => {
   try {
     //this line of code take the first query params from the url and makes it {key:value}
-
+    let studentList;
     const key = Object.entries(req.query)[0][0];
     const value = Object.entries(req.query)[0][1];
     const query = { key: value };
-    // query[Object.entries(req.query)[0][0]] = Object.entries(req.query)[0][1];
-    if (key === "course") {
-      searchByCourse(Object.entries(req.query)[0][1]);
+
+    if (key === "courses") {
+      studentList = await Student.find({ courses: value });
+    } else {
+      studentList = await Student.find(query);
     }
-    const studentList = await Student.find(query);
-
-    res.status(200).json(studentList);
-
     if (studentList.length === 0) next(new Error("No student found in db for this name"));
+    res.status(200).json(studentList);
   } catch (error) {
     next(error);
   }
